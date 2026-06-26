@@ -10,6 +10,9 @@ struct ItemEditSheet: View {
     @Environment(\.modelContext) private var modelContext
     @Environment(\.dismiss) private var dismiss
 
+    @AppStorage(AppConstants.defaultCurrencyKey)
+    private var defaultCurrency = Locale.current.currency?.identifier ?? "USD"
+
     @Bindable var item: Item
 
     @State private var title: String
@@ -121,7 +124,7 @@ struct ItemEditSheet: View {
 
             VStack(alignment: .leading, spacing: 8) {
                 Text("Currency").font(.caption).fontWeight(.medium).foregroundStyle(.siloSecondaryText)
-                TextField("USD", text: $currency)
+                TextField(defaultCurrency, text: $currency)
                     .textInputAutocapitalization(.characters)
                     .autocorrectionDisabled()
                     .font(.body)

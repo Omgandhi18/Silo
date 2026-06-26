@@ -78,6 +78,7 @@ struct ItemDetailView: View {
         .frame(maxWidth: .infinity)
         .frame(height: 320)
         .clipShape(RoundedRectangle(cornerRadius: 18))
+        .shadow(color: .black.opacity(0.18), radius: 16, y: 8)
         .overlay {
             RoundedRectangle(cornerRadius: 18).stroke(.siloCardBorder, lineWidth: 1)
         }
@@ -219,20 +220,30 @@ struct ItemDetailView: View {
     // MARK: - Buy bar
 
     private var buyBar: some View {
-        Button {
-            if let url = item.url { openURL(url) }
-        } label: {
-            Label("Open & Buy", systemImage: "bag.fill")
-                .font(.headline)
+        VStack(spacing: 0) {
+            Divider().overlay(Color.siloCardBorder)
+
+            Button {
+                if let url = item.url { openURL(url) }
+            } label: {
+                HStack(spacing: 7) {
+                    Text("Open & Buy")
+                        .font(.headline)
+                    Image(systemName: "arrow.up.right")
+                        .font(.footnote.weight(.bold))
+                }
                 .frame(maxWidth: .infinity)
-                .padding(.vertical, 16)
+                .padding(.vertical, 17)
+            }
+            .foregroundStyle(.white)
+            .background(.siloClay, in: Capsule())
+            .shadow(color: Color.siloClay.opacity(0.3), radius: 12, y: 5)
+            .padding(.horizontal, 20)
+            .padding(.top, 14)
+            .padding(.bottom, 8)
+            .disabled(item.url == nil)
+            .opacity(item.url == nil ? 0.45 : 1)
         }
-        .foregroundStyle(.white)
-        .background(.siloClay, in: Capsule())
-        .padding(.horizontal, 20)
-        .padding(.bottom, 8)
-        .disabled(item.url == nil)
-        .opacity(item.url == nil ? 0.5 : 1)
         .background(.ultraThinMaterial)
         .accessibilityLabel("Open and buy at \(item.sourceDomain ?? "the store")")
     }

@@ -1,0 +1,31 @@
+# Xcode / Swift
+## Build
+DerivedData/
+build/
+*.xcarchive
+
+## User state (keep shared schemes, ignore per-user)
+xcuserdata/
+*.xcuserstate
+*.xcuserdatad
+
+## Misc
+.DS_Store
+*.moved-aside
+*.hmap
+*.ipa
+*.dSYM.zip
+*.dSYM
+
+## Swift Package Manager
+.build/
+.swiftpm/
+
+## CocoaPods / Carmthage (if ever used)
+Pods/
+Carthage/Build/
+
+## Fastlane (if ever used)
+fastlane/report.xml
+fastlane/screenshots/**/*.png
+fastlane/test_output

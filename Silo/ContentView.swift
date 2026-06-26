@@ -351,13 +351,6 @@ private struct ItemCard: View {
             .padding(.bottom, 12)
         }
         .background(.siloCardSurface, in: RoundedRectangle(cornerRadius: 14))
-        .overlay(alignment: .leading) {
-            if let color = item.collection?.displayColor(for: colorScheme) {
-                Rectangle()
-                    .fill(color)
-                    .frame(width: 3)
-            }
-        }
         .overlay {
             RoundedRectangle(cornerRadius: 14)
                 .stroke(.siloCardBorder, lineWidth: 1)
