@@ -313,21 +313,23 @@ private struct ItemCard: View {
         } label: {
             VStack(alignment: .leading, spacing: 10) {
             ProductImagePlaceholder(item: item)
-
-            VStack(alignment: .leading, spacing: 5) {
-                HStack(alignment: .firstTextBaseline, spacing: 6) {
+                .overlay(alignment: .topTrailing) {
                     if let color = item.collection?.displayColor(for: colorScheme) {
                         Circle()
                             .fill(color)
-                            .frame(width: 7, height: 7)
+                            .frame(width: 10, height: 10)
+                            .overlay(Circle().stroke(Color.white.opacity(0.85), lineWidth: 1.5))
+                            .shadow(color: .black.opacity(0.25), radius: 2, y: 1)
+                            .padding(14)
                     }
-
-                    Text(item.title ?? item.fallbackTitle)
-                        .font(.subheadline)
-                        .fontWeight(.medium)
-                        .foregroundStyle(.siloInk)
-                        .lineLimit(3)
                 }
+
+            VStack(alignment: .leading, spacing: 5) {
+                Text(item.title ?? item.fallbackTitle)
+                    .font(.subheadline)
+                    .fontWeight(.medium)
+                    .foregroundStyle(.siloInk)
+                    .lineLimit(3)
 
                 if let sourceDomain = item.sourceDomain {
                     Text(sourceDomain)
