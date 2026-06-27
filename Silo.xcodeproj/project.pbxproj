@@ -8,6 +8,18 @@
 
 /* Begin PBXBuildFile section */
 		C069FB242FEEE85A00002EC9 /* SiloShare.appex in Embed App Extensions */ = {isa = PBXBuildFile; fileRef = C069FB1A2FEEE85A00002EC9 /* SiloShare.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
+		C069FC5B2FEF857200002EC9 /* .nojekyll in Resources */ = {isa = PBXBuildFile; fileRef = C069FC542FEF857100002EC9 /* .nojekyll */; };
+		C069FC5C2FEF857200002EC9 /* style.css in Resources */ = {isa = PBXBuildFile; fileRef = C069FC582FEF857100002EC9 /* style.css */; };
+		C069FC5D2FEF857200002EC9 /* support.html in Resources */ = {isa = PBXBuildFile; fileRef = C069FC592FEF857100002EC9 /* support.html */; };
+		C069FC5E2FEF857200002EC9 /* privacy.html in Resources */ = {isa = PBXBuildFile; fileRef = C069FC572FEF857100002EC9 /* privacy.html */; };
+		C069FC5F2FEF857200002EC9 /* app-store-listing.md in Resources */ = {isa = PBXBuildFile; fileRef = C069FC552FEF857100002EC9 /* app-store-listing.md */; };
+		C069FC602FEF857200002EC9 /* index.html in Resources */ = {isa = PBXBuildFile; fileRef = C069FC562FEF857100002EC9 /* index.html */; };
+		C069FC612FEF857200002EC9 /* .nojekyll in Resources */ = {isa = PBXBuildFile; fileRef = C069FC542FEF857100002EC9 /* .nojekyll */; };
+		C069FC622FEF857200002EC9 /* style.css in Resources */ = {isa = PBXBuildFile; fileRef = C069FC582FEF857100002EC9 /* style.css */; };
+		C069FC632FEF857200002EC9 /* support.html in Resources */ = {isa = PBXBuildFile; fileRef = C069FC592FEF857100002EC9 /* support.html */; };
+		C069FC642FEF857200002EC9 /* privacy.html in Resources */ = {isa = PBXBuildFile; fileRef = C069FC572FEF857100002EC9 /* privacy.html */; };
+		C069FC652FEF857200002EC9 /* app-store-listing.md in Resources */ = {isa = PBXBuildFile; fileRef = C069FC552FEF857100002EC9 /* app-store-listing.md */; };
+		C069FC662FEF857200002EC9 /* index.html in Resources */ = {isa = PBXBuildFile; fileRef = C069FC562FEF857100002EC9 /* index.html */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -36,6 +48,12 @@
 
 /* Begin PBXFileReference section */
 		C069FB1A2FEEE85A00002EC9 /* SiloShare.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = SiloShare.appex; sourceTree = BUILT_PRODUCTS_DIR; };
+		C069FC542FEF857100002EC9 /* .nojekyll */ = {isa = PBXFileReference; lastKnownFileType = text; path = .nojekyll; sourceTree = "<group>"; };
+		C069FC552FEF857100002EC9 /* app-store-listing.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = "app-store-listing.md"; sourceTree = "<group>"; };
+		C069FC562FEF857100002EC9 /* index.html */ = {isa = PBXFileReference; lastKnownFileType = text.html; path = index.html; sourceTree = "<group>"; };
+		C069FC572FEF857100002EC9 /* privacy.html */ = {isa = PBXFileReference; lastKnownFileType = text.html; path = privacy.html; sourceTree = "<group>"; };
+		C069FC582FEF857100002EC9 /* style.css */ = {isa = PBXFileReference; lastKnownFileType = text.css; path = style.css; sourceTree = "<group>"; };
+		C069FC592FEF857100002EC9 /* support.html */ = {isa = PBXFileReference; lastKnownFileType = text.html; path = support.html; sourceTree = "<group>"; };
 		C0ADC1DE2FEE54E7007C65D1 /* Silo.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Silo.app; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
@@ -88,9 +106,23 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		C069FC5A2FEF857100002EC9 /* docs */ = {
+			isa = PBXGroup;
+			children = (
+				C069FC542FEF857100002EC9 /* .nojekyll */,
+				C069FC552FEF857100002EC9 /* app-store-listing.md */,
+				C069FC562FEF857100002EC9 /* index.html */,
+				C069FC572FEF857100002EC9 /* privacy.html */,
+				C069FC582FEF857100002EC9 /* style.css */,
+				C069FC592FEF857100002EC9 /* support.html */,
+			);
+			path = docs;
+			sourceTree = "<group>";
+		};
 		C0ADC1D52FEE54E7007C65D1 = {
 			isa = PBXGroup;
 			children = (
+				C069FC5A2FEF857100002EC9 /* docs */,
 				C0ADC1E02FEE54E7007C65D1 /* Silo */,
 				C0E100062FEEA00100000001 /* SiloShared */,
 				C069FB1B2FEEE85A00002EC9 /* SiloShare */,
@@ -197,6 +229,12 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				C069FC612FEF857200002EC9 /* .nojekyll in Resources */,
+				C069FC622FEF857200002EC9 /* style.css in Resources */,
+				C069FC632FEF857200002EC9 /* support.html in Resources */,
+				C069FC642FEF857200002EC9 /* privacy.html in Resources */,
+				C069FC652FEF857200002EC9 /* app-store-listing.md in Resources */,
+				C069FC662FEF857200002EC9 /* index.html in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -204,6 +242,12 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				C069FC5B2FEF857200002EC9 /* .nojekyll in Resources */,
+				C069FC5C2FEF857200002EC9 /* style.css in Resources */,
+				C069FC5D2FEF857200002EC9 /* support.html in Resources */,
+				C069FC5E2FEF857200002EC9 /* privacy.html in Resources */,
+				C069FC5F2FEF857200002EC9 /* app-store-listing.md in Resources */,
+				C069FC602FEF857200002EC9 /* index.html in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
