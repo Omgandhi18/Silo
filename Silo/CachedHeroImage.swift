@@ -16,11 +16,13 @@ struct CachedHeroImage: View {
                 Image(uiImage: image)
                     .resizable()
                     .aspectRatio(contentMode: contentMode)
+                    .frame(maxWidth: .infinity, maxHeight: .infinity)
                     .transition(.opacity)
             } else {
                 Color.clear
             }
         }
+        .clipped()
         .task(id: relativePath) {
             let loaded = await Self.load(relativePath)
             withAnimation(.easeOut(duration: 0.2)) { image = loaded }

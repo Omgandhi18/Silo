@@ -421,32 +421,33 @@ private struct ProductImagePlaceholder: View {
     let item: Item
 
     var body: some View {
-        ZStack(alignment: .bottomLeading) {
-            RoundedRectangle(cornerRadius: 12)
-                .fill(
-                    LinearGradient(
-                        colors: [
-                            Color.siloCardBorder.opacity(0.72),
-                            Color.siloCanvas.opacity(0.82)
-                        ],
-                        startPoint: .topLeading,
-                        endPoint: .bottomTrailing
-                    )
+        // The background rectangle defines the size (via aspectRatio); the image
+        // is an OVERLAY so it fills + clips without ever inflating the card's
+        // width — clipping alone only affects drawing, not layout.
+        RoundedRectangle(cornerRadius: 12)
+            .fill(
+                LinearGradient(
+                    colors: [
+                        Color.siloCardBorder.opacity(0.72),
+                        Color.siloCanvas.opacity(0.82)
+                    ],
+                    startPoint: .topLeading,
+                    endPoint: .bottomTrailing
                 )
-
-            if let path = item.imageLocalPath {
-                CachedHeroImage(relativePath: path)
-            } else {
-                Image(systemName: item.state == .caught ? "sparkles" : "shippingbox")
-                    .font(.title3)
-                    .foregroundStyle(.siloMutedText)
-                    .padding(12)
+            )
+            .aspectRatio(item.placeholderAspectRatio, contentMode: .fit)
+            .overlay {
+                if let path = item.imageLocalPath {
+                    CachedHeroImage(relativePath: path)
+                } else {
+                    Image(systemName: item.state == .caught ? "sparkles" : "shippingbox")
+                        .font(.title3)
+                        .foregroundStyle(.siloMutedText)
+                }
             }
-        }
-        .aspectRatio(item.placeholderAspectRatio, contentMode: .fit)
-        .clipShape(RoundedRectangle(cornerRadius: 12))
-        .shimmering(active: item.state == .caught && item.imageLocalPath == nil)
-        .padding([.top, .horizontal], 8)
+            .clipShape(RoundedRectangle(cornerRadius: 12))
+            .shimmering(active: item.state == .caught && item.imageLocalPath == nil)
+            .padding([.top, .horizontal], 8)
     }
 }
 
