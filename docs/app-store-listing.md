@@ -52,7 +52,7 @@ Silo is for the way you actually shop — slowly, thoughtfully, when it suits yo
 Private by default: Silo has no account and no cloud. Your saved items never leave your device.
 
 ## What's New  (version 1.0)
-The first release of Silo. Thank you for trying it — I'd love your feedback at omgandhi255@gmail.com.
+The first release of Silo. Thank you for trying it — I'd love your feedback at devilgandhi@gmail.com.
 
 ---
 

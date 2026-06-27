@@ -10,7 +10,7 @@ struct SettingsView: View {
     @AppStorage(AppConstants.defaultCurrencyKey)
     private var defaultCurrency = Locale.current.currency?.identifier ?? "USD"
 
-    private static let developerEmail = "omgandhi255@gmail.com"
+    private static let developerEmail = "devilgandhi@gmail.com"
 
     /// Major currencies up top; the device's own currency is folded in if it
     /// isn't already listed, so nobody's stuck without their own.

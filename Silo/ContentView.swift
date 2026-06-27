@@ -284,12 +284,14 @@ private struct MasonryGrid: View {
                         ItemCard(item: item, collections: collections)
                     }
                 }
+                .frame(maxWidth: .infinity)
 
                 LazyVStack(spacing: 14) {
                     ForEach(columns.1) { item in
                         ItemCard(item: item, collections: collections)
                     }
                 }
+                .frame(maxWidth: .infinity)
             }
             .padding(.horizontal, 20)
             .padding(.top, 14)
