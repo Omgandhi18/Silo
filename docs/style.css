@@ -1,0 +1,120 @@
+:root {
+  --bg: #F4EEE4;
+  --surface: #FBF7F0;
+  --border: #E7DFD2;
+  --ink: #2C2823;
+  --secondary: #6B6359;
+  --muted: #8A8175;
+  --clay: #C2663F;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg: #1C1916;
+    --surface: #262019;
+    --border: #342D24;
+    --ink: #EDE6D9;
+    --secondary: #9A9082;
+    --muted: #7C7468;
+    --clay: #D17A52;
+  }
+}
+
+* { box-sizing: border-box; }
+
+html { -webkit-text-size-adjust: 100%; }
+
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--ink);
+  font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", system-ui, sans-serif;
+  font-size: 17px;
+  line-height: 1.65;
+  -webkit-font-smoothing: antialiased;
+}
+
+.wrap {
+  max-width: 680px;
+  margin: 0 auto;
+  padding: 64px 24px 96px;
+}
+
+.brand {
+  font-family: Georgia, "New York", "Times New York", serif;
+  font-size: 28px;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+  margin: 0 0 4px;
+}
+
+.tagline {
+  color: var(--muted);
+  font-size: 15px;
+  margin: 0 0 48px;
+}
+
+h1 {
+  font-family: Georgia, "New York", serif;
+  font-weight: 600;
+  font-size: 34px;
+  line-height: 1.2;
+  letter-spacing: -0.015em;
+  margin: 0 0 8px;
+}
+
+h2 {
+  font-family: Georgia, "New York", serif;
+  font-weight: 600;
+  font-size: 22px;
+  margin: 44px 0 12px;
+}
+
+p, li { color: var(--ink); }
+p { margin: 0 0 16px; }
+
+.lead { color: var(--secondary); font-size: 18px; }
+
+ul { padding-left: 22px; margin: 0 0 16px; }
+li { margin: 0 0 8px; }
+
+a { color: var(--clay); text-decoration: none; }
+a:hover { text-decoration: underline; }
+
+strong { font-weight: 600; }
+
+.meta {
+  color: var(--muted);
+  font-size: 14px;
+  margin-bottom: 40px;
+}
+
+.card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  padding: 20px 22px;
+  margin: 24px 0;
+}
+
+.footer {
+  margin-top: 72px;
+  padding-top: 24px;
+  border-top: 1px solid var(--border);
+  color: var(--muted);
+  font-size: 14px;
+}
+
+.button {
+  display: inline-block;
+  background: var(--clay);
+  color: #fff;
+  padding: 12px 22px;
+  border-radius: 999px;
+  font-weight: 600;
+  margin-top: 8px;
+}
+.button:hover { text-decoration: none; opacity: 0.92; }
+
+.nav { margin-bottom: 40px; font-size: 15px; }
+.nav a { margin-right: 18px; color: var(--secondary); }
