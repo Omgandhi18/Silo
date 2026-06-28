@@ -7,6 +7,9 @@ import UIKit
 /// enrichment do the rest, or fill in everything by hand for something that has
 /// no good page (a shop find, a gift idea). A link still drives auto-enrichment;
 /// anything you type is treated as authored and won't be overwritten.
+///
+/// The sheet opens on the fast path — a single link field — and only unfolds the
+/// full form when you choose to enter the details yourself.
 struct AddItemSheet: View {
     @Environment(\.modelContext) private var modelContext
     @Environment(\.dismiss) private var dismiss
@@ -16,6 +19,10 @@ struct AddItemSheet: View {
 
     @AppStorage(AppConstants.defaultCurrencyKey)
     private var defaultCurrency = Locale.current.currency?.identifier ?? "USD"
+
+    /// Which way the user is filing this — paste a link, or type it all out.
+    private enum Mode { case link, manual }
+    @State private var mode: Mode = .link
 
     @State private var urlText = ""
     @State private var title = ""
@@ -31,15 +38,33 @@ struct AddItemSheet: View {
     @State private var isProcessingImage = false
 
     @FocusState private var urlFocused: Bool
+    @FocusState private var titleFocused: Bool
 
-    /// Tolerates a bare "store.com/x" by assuming https; requires a real host so
-    /// we don't file gibberish. Nil when the field is empty — a URL is optional.
+    @State private var savedModel: SavedSheetModel?
+    @State private var savedItem: Item?
+
+    /// Finds the link to file. Pasted text is often messy — stores like Amazon
+    /// share "Title … https://…" — so we first let `NSDataDetector` pull a real
+    /// link out of anywhere in the string. Failing that, we tolerate a bare
+    /// "store.com/x" by assuming https. Nil when there's nothing link-shaped.
     private var normalizedURL: URL? {
         guard let trimmed = urlText.trimmedNonEmpty else { return nil }
+
+        if let detected = Self.firstURL(in: trimmed) { return detected }
+
         let candidate = (URL(string: trimmed)?.scheme != nil)
             ? URL(string: trimmed)
             : URL(string: "https://\(trimmed)")
         guard let url = candidate, let host = url.host(), host.contains(".") else { return nil }
+        return url
+    }
+
+    /// First http(s) link anywhere in `text`, via the system data detector.
+    private static func firstURL(in text: String) -> URL? {
+        let detector = try? NSDataDetector(types: NSTextCheckingResult.CheckingType.link.rawValue)
+        let range = NSRange(text.startIndex..<text.endIndex, in: text)
+        guard let url = detector?.firstMatch(in: text, options: [], range: range)?.url,
+              let scheme = url.scheme, scheme.hasPrefix("http") else { return nil }
         return url
     }
 
@@ -55,18 +80,10 @@ struct AddItemSheet: View {
 
                 ScrollView {
                     VStack(alignment: .leading, spacing: 20) {
-                        Text("Paste a link and Silo fills in the rest — or enter the details yourself.")
-                            .font(.subheadline)
-                            .foregroundStyle(.siloSecondaryText)
-                            .fixedSize(horizontal: false, vertical: true)
-
-                        urlField
-                        imageRow
-                        field("Title", text: $title, prompt: "Product name")
-                        field("Source", text: $source, prompt: "store.com")
-                        priceRow
-                        collectionRow
-                        noteField
+                        switch mode {
+                        case .link:   linkStep
+                        case .manual: manualStep
+                        }
                     }
                     .padding(20)
                 }
@@ -80,16 +97,99 @@ struct AddItemSheet: View {
                 ToolbarItem(placement: .confirmationAction) {
                     Button("Add") { Task { await add() } }
                         .fontWeight(.semibold)
-                        .disabled(!canSave)
+                        .disabled(!canSave || savedModel != nil)
                 }
             }
             .tint(.siloInk)
         }
+        .overlay { savedOverlay }
         .presentationDragIndicator(.visible)
         .onAppear { urlFocused = true }
         .onChange(of: pickedPhoto) { _, newValue in
             guard let newValue else { return }
             Task { await loadPreview(newValue) }
+        }
+        .onChange(of: mode) { _, newMode in
+            // Hand focus to the field that just became the centre of attention.
+            switch newMode {
+            case .link:   urlFocused = true
+            case .manual: titleFocused = true
+            }
+        }
+    }
+
+    // MARK: - Steps
+
+    /// Step one: just a link, plus the door into the manual form.
+    private var linkStep: some View {
+        VStack(alignment: .leading, spacing: 20) {
+            Text("Paste a link and Silo fills in the rest.")
+                .font(.subheadline)
+                .foregroundStyle(.siloSecondaryText)
+                .fixedSize(horizontal: false, vertical: true)
+
+            urlField
+
+            Button {
+                Haptics.tap()
+                withAnimation(.easeInOut(duration: 0.25)) { mode = .manual }
+            } label: {
+                HStack(spacing: 6) {
+                    Image(systemName: "square.and.pencil").font(.caption)
+                    Text("or enter the details yourself")
+                }
+                .font(.subheadline).fontWeight(.medium)
+                .foregroundStyle(.siloClay)
+                .frame(maxWidth: .infinity)
+                .padding(.vertical, 6)
+            }
+            .buttonStyle(.plain)
+        }
+        .transition(.opacity)
+    }
+
+    /// Step two: the full form, for finds that have no good page to read.
+    private var manualStep: some View {
+        VStack(alignment: .leading, spacing: 20) {
+            Button {
+                Haptics.tap()
+                withAnimation(.easeInOut(duration: 0.25)) { mode = .link }
+            } label: {
+                HStack(spacing: 6) {
+                    Image(systemName: "chevron.left").font(.caption.weight(.semibold))
+                    Text("Have a link? Paste it instead")
+                }
+                .font(.subheadline).fontWeight(.medium)
+                .foregroundStyle(.siloClay)
+            }
+            .buttonStyle(.plain)
+
+            imageRow
+            titleField
+            field("Source", text: $source, prompt: "store.com")
+            priceRow
+            collectionRow
+            noteField
+        }
+        .transition(.opacity)
+    }
+
+    // MARK: - Confirmation
+
+    /// The shared "magic" card — the in-app twin of the Share Extension's
+    /// confirmation, so filing feels the same wherever you do it.
+    @ViewBuilder
+    private var savedOverlay: some View {
+        if let savedModel {
+            SavedProductSheet(
+                model: savedModel,
+                onSelectCollection: { id in
+                    savedItem?.collection = collections.first { $0.id == id }
+                    try? modelContext.save()
+                },
+                onDone: { dismiss() }
+            )
+            .transition(.opacity)
         }
     }
 
@@ -118,9 +218,21 @@ struct AddItemSheet: View {
                     .foregroundStyle(.siloClay)
                 }
             }
-            .padding(12)
-            .background(.siloCardSurface, in: RoundedRectangle(cornerRadius: 12))
-            .overlay { RoundedRectangle(cornerRadius: 12).stroke(.siloCardBorder, lineWidth: 1) }
+            .siloFieldBox()
+        }
+    }
+
+    /// Title gets its own view (not the shared `field` helper) so we can focus it
+    /// the moment the manual form appears.
+    private var titleField: some View {
+        VStack(alignment: .leading, spacing: 8) {
+            Text("Title").font(.caption).fontWeight(.medium).foregroundStyle(.siloSecondaryText)
+            TextField("Product name", text: $title)
+                .focused($titleFocused)
+                .textInputAutocapitalization(.sentences)
+                .font(.body)
+                .foregroundStyle(.siloInk)
+                .siloFieldBox()
         }
     }
 
@@ -131,9 +243,7 @@ struct AddItemSheet: View {
                 .textInputAutocapitalization(.sentences)
                 .font(.body)
                 .foregroundStyle(.siloInk)
-                .padding(12)
-                .background(.siloCardSurface, in: RoundedRectangle(cornerRadius: 12))
-                .overlay { RoundedRectangle(cornerRadius: 12).stroke(.siloCardBorder, lineWidth: 1) }
+                .siloFieldBox()
         }
     }
 
@@ -173,9 +283,7 @@ struct AddItemSheet: View {
                 TextField("0", text: $priceText)
                     .keyboardType(.decimalPad)
                     .font(.body).foregroundStyle(.siloInk)
-                    .padding(12)
-                    .background(.siloCardSurface, in: RoundedRectangle(cornerRadius: 12))
-                    .overlay { RoundedRectangle(cornerRadius: 12).stroke(.siloCardBorder, lineWidth: 1) }
+                    .siloFieldBox()
             }
             VStack(alignment: .leading, spacing: 8) {
                 Text("Currency").font(.caption).fontWeight(.medium).foregroundStyle(.siloSecondaryText)
@@ -184,9 +292,7 @@ struct AddItemSheet: View {
                     .autocorrectionDisabled()
                     .font(.body).foregroundStyle(.siloInk)
                     .frame(width: 88)
-                    .padding(12)
-                    .background(.siloCardSurface, in: RoundedRectangle(cornerRadius: 12))
-                    .overlay { RoundedRectangle(cornerRadius: 12).stroke(.siloCardBorder, lineWidth: 1) }
+                    .siloFieldBox()
             }
         }
     }
@@ -210,9 +316,7 @@ struct AddItemSheet: View {
                     Image(systemName: "chevron.up.chevron.down")
                         .font(.caption).foregroundStyle(.siloMutedText)
                 }
-                .padding(12)
-                .background(.siloCardSurface, in: RoundedRectangle(cornerRadius: 12))
-                .overlay { RoundedRectangle(cornerRadius: 12).stroke(.siloCardBorder, lineWidth: 1) }
+                .siloFieldBox()
             }
         }
     }
@@ -223,9 +327,7 @@ struct AddItemSheet: View {
             TextField("Why you saved it, a size, a reminder…", text: $note, axis: .vertical)
                 .font(.body).foregroundStyle(.siloInk)
                 .lineLimit(2...5)
-                .padding(12)
-                .background(.siloCardSurface, in: RoundedRectangle(cornerRadius: 12))
-                .overlay { RoundedRectangle(cornerRadius: 12).stroke(.siloCardBorder, lineWidth: 1) }
+                .siloFieldBox()
         }
     }
 
@@ -240,7 +342,7 @@ struct AddItemSheet: View {
     }
 
     private func add() async {
-        guard canSave else { return }
+        guard canSave, savedModel == nil else { return }
 
         let urlString = normalizedURL?.absoluteString ?? ""
 
@@ -248,8 +350,7 @@ struct AddItemSheet: View {
         if let existing = activeDuplicate(of: urlString) {
             existing.savedAt = Date()
             try? modelContext.save()
-            Haptics.tap()
-            dismiss()
+            presentSaved(item: existing, enrich: false)
             return
         }
 
@@ -289,8 +390,69 @@ struct AddItemSheet: View {
         }
 
         try? modelContext.save()
-        Haptics.tap()
-        dismiss()
+        presentSaved(item: item, enrich: normalizedURL != nil)
+    }
+
+    /// Swaps the form for the shared "magic" card. With a link, we kick off a
+    /// live enrichment pass and let the card sparkle into shape; without one,
+    /// the card is already complete from what was typed.
+    private func presentSaved(item: Item, enrich: Bool) {
+        savedItem = item
+        let model = SavedSheetModel(
+            phase: enrich ? .enriching : .done,
+            title: item.title,
+            domain: item.sourceDomain,
+            priceText: item.formattedPrice,
+            imageRelativePath: item.imageLocalPath,
+            collections: collections.map {
+                CollectionChip(id: $0.id, name: $0.name, lightHex: $0.colorHex, darkHex: $0.darkColorHex)
+            },
+            selectedCollectionID: item.collection?.id
+        )
+
+        withAnimation(.easeInOut(duration: 0.3)) { savedModel = model }
+
+        if enrich {
+            Task { await enrichAndFill(item: item, model: model) }
+        } else {
+            Haptics.success()
+        }
+    }
+
+    /// Runs a single enrichment pass inline (the same engine the background sweep
+    /// uses), fills any blanks, and feeds the results into the card. Failure is
+    /// soft: the item stays `.caught` for the app's sweep to finish later.
+    private func enrichAndFill(item: Item, model: SavedSheetModel) async {
+        let urlString = item.urlString
+
+        if !urlString.isEmpty, let m = await EnrichmentService.fetchMetadata(for: urlString) {
+            if let title = m.title, isBlank(item.title) { item.title = title }
+            if let domain = m.sourceDomain, isBlank(item.sourceDomain) { item.sourceDomain = domain }
+            if let currency = m.currencyCode, isBlank(item.currencyCode) { item.currencyCode = currency }
+            if let price = m.price {
+                if item.savedPrice == nil { item.savedPrice = price }
+                item.currentPrice = price
+                item.priceCheckedAt = Date()
+            }
+            if let canonical = m.canonicalURLString { item.canonicalURLString = canonical }
+            if let resolved = m.resolvedURLString { item.urlString = resolved }
+            if let imageURL = m.imageURL, isBlank(item.imageLocalPath),
+               let path = await ImageCache.shared.store(imageURL, forItemID: item.id) {
+                item.imageLocalPath = path
+            }
+            item.state = .enriched
+            try? modelContext.save()
+        }
+
+        model.title = item.title
+        model.domain = item.sourceDomain
+        model.priceText = item.formattedPrice
+        model.imageRelativePath = item.imageLocalPath
+        withAnimation(.spring(response: 0.5, dampingFraction: 0.7)) { model.phase = .done }
+    }
+
+    private func isBlank(_ value: String?) -> Bool {
+        value?.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty ?? true
     }
 
     private func activeDuplicate(of urlString: String) -> Item? {
@@ -301,5 +463,15 @@ struct AddItemSheet: View {
             }
         )
         return try? modelContext.fetch(descriptor).first
+    }
+}
+
+private extension View {
+    /// The shared rounded card-surface treatment worn by every input box.
+    func siloFieldBox() -> some View {
+        self
+            .padding(12)
+            .background(.siloCardSurface, in: RoundedRectangle(cornerRadius: 12))
+            .overlay { RoundedRectangle(cornerRadius: 12).stroke(.siloCardBorder, lineWidth: 1) }
     }
 }
