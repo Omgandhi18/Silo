@@ -1,0 +1,134 @@
+/* ─── Reset & base ─────────────────────────────────────────────── */
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+:root {
+  --bg: #F4EEE4;
+  --surface: #FBF7F0;
+  --surface-2: #F1E9DC;
+  --border: #E7DFD2;
+  --border-mid: #DCD2C2;
+  --ink: #2C2823;
+  --secondary: #6B6359;
+  --muted: #8A8175;
+  --clay: #C2663F;
+  --clay-soft: rgba(194, 102, 63, 0.10);
+  --clay-line: rgba(194, 102, 63, 0.28);
+
+  --font-serif: 'Fraunces', Georgia, 'New York', serif;
+  --font-sans: 'Inter', -apple-system, BlinkMacSystemFont, system-ui, sans-serif;
+  --max-w: 1140px;
+  --section-gap: 130px;
+  --shadow-soft: 0 1px 2px rgba(44, 40, 35, 0.04), 0 8px 28px rgba(44, 40, 35, 0.06);
+  --shadow-lift: 0 2px 4px rgba(44, 40, 35, 0.05), 0 18px 48px rgba(44, 40, 35, 0.10);
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg: #1C1916;
+    --surface: #262019;
+    --surface-2: #2E281F;
+    --border: #342D24;
+    --border-mid: #41392E;
+    --ink: #EDE6D9;
+    --secondary: #9A9082;
+    --muted: #7C7468;
+    --clay: #D17A52;
+    --clay-soft: rgba(209, 122, 82, 0.12);
+    --clay-line: rgba(209, 122, 82, 0.34);
+    --shadow-soft: 0 1px 2px rgba(0, 0, 0, 0.3), 0 8px 28px rgba(0, 0, 0, 0.35);
+    --shadow-lift: 0 2px 4px rgba(0, 0, 0, 0.35), 0 18px 48px rgba(0, 0, 0, 0.5);
+  }
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  background: var(--bg);
+  color: var(--ink);
+  font-family: var(--font-sans);
+  font-size: 16px;
+  line-height: 1.65;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+  overflow-x: hidden;
+}
+
+/* ─── Typography ───────────────────────────────────────────────── */
+h1, h2, h3, h4 {
+  font-family: var(--font-serif);
+  font-weight: 600;
+  line-height: 1.15;
+  letter-spacing: -0.02em;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+/* ─── Shared eyebrow ───────────────────────────────────────────── */
+.eyebrow {
+  font-family: var(--font-sans);
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--clay);
+}
+
+/* ─── Animations ───────────────────────────────────────────────── */
+@keyframes fadeDown {
+  from { opacity: 0; transform: translateY(-12px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(22px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes float {
+  0%, 100% { transform: translateY(0px); }
+  50%      { transform: translateY(-7px); }
+}
+
+/* ─── Scroll-triggered visibility ──────────────────────────────── */
+.reveal {
+  opacity: 0;
+  transform: translateY(24px);
+  transition: opacity 0.7s cubic-bezier(0.22, 1, 0.36, 1),
+              transform 0.7s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.reveal.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+    scroll-behavior: auto !important;
+  }
+  .reveal { opacity: 1; transform: none; }
+}
+
+/* ─── Section shared ───────────────────────────────────────────── */
+.section-container {
+  max-width: var(--max-w);
+  margin: 0 auto;
+  padding: 0 48px;
+}
+
+@media (max-width: 768px) {
+  :root { --section-gap: 80px; }
+  .section-container { padding: 0 24px; }
+}

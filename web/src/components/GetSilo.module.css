@@ -1,0 +1,155 @@
+.section {
+  padding: var(--section-gap) 0;
+  border-top: 1px solid var(--border);
+  position: relative;
+  overflow: hidden;
+}
+
+.glow {
+  position: absolute;
+  bottom: -10%;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 80%;
+  height: 70%;
+  background: radial-gradient(ellipse 70% 55% at 50% 100%, var(--clay-soft), transparent 70%);
+  pointer-events: none;
+}
+
+.container {
+  max-width: var(--max-w);
+  margin: 0 auto;
+  padding: 0 48px;
+  position: relative;
+  z-index: 1;
+}
+
+.card {
+  max-width: 620px;
+  margin: 0 auto;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 28px;
+  padding: 56px 48px;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 16px;
+  box-shadow: var(--shadow-soft);
+}
+
+.mark {
+  margin-bottom: 6px;
+}
+
+.markInner {
+  position: relative;
+  display: block;
+  width: 56px;
+  height: 56px;
+  border: 2.5px solid var(--ink);
+  border-radius: 15px;
+}
+
+.markDot {
+  position: absolute;
+  top: -6px;
+  right: -6px;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  background: var(--clay);
+  border: 3px solid var(--surface);
+}
+
+.eyebrow {
+  display: block;
+}
+
+.title {
+  font-size: clamp(28px, 4vw, 42px);
+  color: var(--ink);
+  letter-spacing: -0.03em;
+  max-width: 16ch;
+}
+
+.sub {
+  font-size: 17px;
+  color: var(--secondary);
+  line-height: 1.65;
+  max-width: 42ch;
+}
+
+.storeBtn {
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+  margin-top: 12px;
+  padding: 12px 26px;
+  background: var(--ink);
+  color: var(--bg);
+  border-radius: 14px;
+  transition: transform 0.25s ease, box-shadow 0.25s ease, opacity 0.25s ease;
+}
+
+.storeBtn:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-lift);
+}
+
+.storeBtn[aria-disabled="true"] {
+  opacity: 0.55;
+  cursor: not-allowed;
+  pointer-events: none;
+}
+
+.storeGlyph {
+  width: 26px;
+  height: 26px;
+  flex-shrink: 0;
+}
+
+.storeText {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  font-family: var(--font-sans);
+  font-size: 19px;
+  font-weight: 600;
+  line-height: 1.05;
+}
+
+.storeText small {
+  font-size: 10px;
+  font-weight: 500;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  opacity: 0.85;
+}
+
+.badge {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--clay);
+  letter-spacing: 0.02em;
+}
+
+.badgeSoon {
+  color: var(--muted);
+}
+
+.badgeDot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: currentColor;
+}
+
+@media (max-width: 600px) {
+  .container { padding: 0 24px; }
+  .card { padding: 44px 28px; border-radius: 24px; }
+}

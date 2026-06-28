@@ -1,0 +1,83 @@
+import { useEffect } from 'react'
+import styles from './InnerPage.module.css'
+
+export default function Privacy() {
+  useEffect(() => {
+    window.scrollTo(0, 0)
+  }, [])
+
+  return (
+    <div className={styles.page}>
+      <div className={styles.hero}>
+        <div className={styles.heroGlow} aria-hidden="true" />
+        <div className={styles.heroInner}>
+          <span className={`${styles.eyebrow} eyebrow`}>Privacy Policy</span>
+          <h1 className={styles.title}>Your stash stays yours.</h1>
+          <p className={styles.subtitle}>
+            Silo is a private, on-device app. It has no accounts and no servers
+            that collect your information — so there is essentially nothing about
+            you for us to gather, share, or sell.
+          </p>
+        </div>
+      </div>
+
+      <div className={styles.body}>
+        <h2>What stays on your device</h2>
+        <p>
+          Everything you save in Silo — links, titles, prices, images, notes, and
+          collections — is stored locally on your device, inside the app’s private
+          storage. This information is never sent to us, because Silo has no backend.
+        </p>
+
+        <h2>How Silo uses the network</h2>
+        <p>
+          When you save a link, Silo fetches that web page{' '}
+          <strong>directly from the retailer</strong> to read its title, image, and
+          price so your saved item looks complete. These requests go to the website
+          you saved — not to Silo. When you tap <strong>Open &amp; Buy</strong>, Silo
+          simply opens that link in your browser.
+        </p>
+        <p>
+          Silo contains{' '}
+          <strong>no analytics, no tracking, no advertising, and no third-party SDKs.</strong>
+        </p>
+
+        <h2>Photos</h2>
+        <p>
+          If you choose a photo to use as an item’s image, it is stored locally on
+          your device. Silo only ever sees the single photo you pick — it does not
+          access your photo library otherwise.
+        </p>
+
+        <h2>Data collection</h2>
+        <p>
+          Silo does not collect, transmit, or store any personal data on any server.
+          There is no account to create and no profile to build. We do not sell or
+          share data, because we never receive it.
+        </p>
+
+        <h2>Children</h2>
+        <p>
+          Silo is suitable for all ages and collects no data from anyone, including
+          children.
+        </p>
+
+        <h2>Changes</h2>
+        <p>
+          If this policy ever changes, the updated version will be posted on this
+          page with a new date.
+        </p>
+
+        <h2>Contact</h2>
+        <div className={styles.contactCard}>
+          <strong>Questions about privacy</strong>
+          <p>
+            Email <a href="mailto:devilgandhi@gmail.com">devilgandhi@gmail.com</a>.
+          </p>
+        </div>
+
+        <p className={styles.meta}>Last updated: June 26, 2026</p>
+      </div>
+    </div>
+  )
+}

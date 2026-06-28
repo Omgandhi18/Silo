@@ -1,0 +1,170 @@
+.page {
+  padding-top: 64px;
+  min-height: 100vh;
+}
+
+.hero {
+  padding: 80px 0 60px;
+  border-bottom: 1px solid var(--border);
+  position: relative;
+  overflow: hidden;
+}
+
+.heroGlow {
+  position: absolute;
+  top: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 70%;
+  height: 100%;
+  background: radial-gradient(ellipse 55% 60% at 50% 0%, var(--clay-soft), transparent 70%);
+  pointer-events: none;
+}
+
+.heroInner {
+  max-width: 720px;
+  margin: 0 auto;
+  padding: 0 48px;
+  position: relative;
+  z-index: 1;
+}
+
+.eyebrow {
+  display: block;
+  margin-bottom: 18px;
+  animation: fadeUp 0.5s ease both;
+}
+
+.title {
+  font-size: clamp(34px, 4.5vw, 52px);
+  color: var(--ink);
+  letter-spacing: -0.03em;
+  margin-bottom: 16px;
+  animation: fadeUp 0.5s ease 0.1s both;
+}
+
+.subtitle {
+  font-size: 18px;
+  color: var(--secondary);
+  line-height: 1.7;
+  max-width: 56ch;
+  animation: fadeUp 0.5s ease 0.2s both;
+}
+
+.body {
+  max-width: 720px;
+  margin: 0 auto;
+  padding: 64px 48px 110px;
+}
+
+/* ─── Typography inside body ───────────────────── */
+.body h2 {
+  font-family: var(--font-serif);
+  font-size: 24px;
+  font-weight: 600;
+  color: var(--ink);
+  letter-spacing: -0.01em;
+  margin: 48px 0 16px;
+}
+
+.body h2:first-child {
+  margin-top: 0;
+}
+
+.body p {
+  font-size: 16px;
+  color: var(--secondary);
+  line-height: 1.75;
+  margin-bottom: 16px;
+}
+
+.body p strong {
+  color: var(--ink);
+  font-weight: 600;
+}
+
+.body ul {
+  margin: 0 0 20px 0;
+  padding-left: 0;
+  list-style: none;
+}
+
+.body li {
+  font-size: 16px;
+  color: var(--secondary);
+  line-height: 1.7;
+  padding: 7px 0 7px 24px;
+  position: relative;
+}
+
+.body li::before {
+  content: '';
+  position: absolute;
+  left: 2px;
+  top: 16px;
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--clay);
+}
+
+.body li strong {
+  color: var(--ink);
+  font-weight: 600;
+}
+
+.body a {
+  color: var(--clay);
+  text-decoration: none;
+  border-bottom: 1px solid var(--clay-line);
+  transition: border-color 0.2s ease;
+}
+
+.body a:hover {
+  border-color: var(--clay);
+}
+
+/* ─── Contact card ─────────────────────────────── */
+.contactCard {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  padding: 28px 32px;
+  margin: 32px 0;
+  box-shadow: var(--shadow-soft);
+}
+
+.contactCard p {
+  margin: 0;
+}
+
+.contactCard strong {
+  display: block;
+  font-family: var(--font-serif);
+  font-size: 18px;
+  font-weight: 600;
+  color: var(--ink);
+  margin-bottom: 6px;
+}
+
+/* ─── Meta ─────────────────────────────────────── */
+.meta {
+  font-size: 13px;
+  color: var(--muted);
+  margin-top: 56px;
+  padding-top: 24px;
+  border-top: 1px solid var(--border);
+}
+
+@media (max-width: 768px) {
+  .heroInner,
+  .body {
+    padding-left: 24px;
+    padding-right: 24px;
+  }
+}
+
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(20px); }
+  to   { opacity: 1; transform: translateY(0); }
+}

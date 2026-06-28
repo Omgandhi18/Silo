@@ -1,0 +1,79 @@
+.footer {
+  border-top: 1px solid var(--border);
+  padding: 36px 0;
+}
+
+.inner {
+  max-width: var(--max-w);
+  margin: 0 auto;
+  padding: 0 48px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+}
+
+.left {
+  display: flex;
+  align-items: center;
+  gap: 18px;
+}
+
+.logo {
+  font-family: var(--font-serif);
+  font-size: 18px;
+  font-weight: 600;
+  color: var(--ink);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.mark {
+  position: relative;
+  width: 15px;
+  height: 15px;
+  border: 1.6px solid var(--ink);
+  border-radius: 4px;
+}
+
+.markDot {
+  position: absolute;
+  top: -2.5px;
+  right: -2.5px;
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: var(--clay);
+  border: 1.4px solid var(--bg);
+}
+
+.copy {
+  font-size: 13px;
+  color: var(--muted);
+}
+
+.links {
+  display: flex;
+  align-items: center;
+  gap: 26px;
+}
+
+.link {
+  font-size: 14px;
+  color: var(--secondary);
+  transition: color 0.2s ease;
+}
+
+.link:hover {
+  color: var(--clay);
+}
+
+@media (max-width: 640px) {
+  .inner {
+    padding: 0 24px;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 22px;
+  }
+}
